@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: mini-rag-mongodb
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: ENVIRONMENT
+        value: production
+      - key: ALLOWED_ORIGINS
+        value: "*"
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DATABASE
+        value: mini_rag
+      - key: ATLAS_VECTOR_INDEX_NAME
+        value: vector_index
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: EMBEDDING_API_URL
+        value: https://generativelanguage.googleapis.com/v1beta/openai/v1/embeddings
+      - key: EMBEDDING_MODEL
+        value: text-embedding-004
+      - key: EMBEDDING_DIM
+        value: "768"
+      - key: LLM_API_URL
+        value: https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions
+      - key: LLM_MODEL
+        value: gemini-1.5-flash
+      - key: AUTH_API_KEY
+        sync: false
+      - key: MAX_UPLOAD_MB
+        value: "10"
+      - key: CHUNK_SIZE
+        value: "800"
+      - key: CHUNK_OVERLAP
+        value: "120"
+      - key: TOP_K
+        value: "5"
